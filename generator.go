@@ -30,7 +30,9 @@ func GetInstructions() string {
     				<li>Convert Tailwind CSS utility classes into equivalent vanilla CSS.</li>  
     				<li>Properly interpret Tailwind's bracket notation, escaped values, and arbitrary values:</li>  
     			<ul>  
-        			<li>Convert <code>left-[50%]</code> → <code>left: 50%;</code></li>  
+        			<li>Convert <code>left-[50%]</code> → <code>left: 50%;</code></li> 
+					<li>Translate selectors with escaped values: <code>left-[50%]</code> → <code>.left-\[50\%\]</code></li>
+					<li>Translate all selectors appropriately as the above example</li>
         			<li>Convert <code>h-[calc(100vh-4rem)]</code> → <code>height: calc(100vh - 4rem);</code></li>  
     			</ul>  
     				<li>Handle negative values appropriately:</li>  
