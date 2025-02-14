@@ -1,9 +1,9 @@
 package representer
 
 // HtmlDocument struct represents an entire HTML document.
-type HtmlDocument struct {
+type Document struct {
 	Language string
-	Head     HtmlHead
+	Head     Head
 	Body     Body
 }
 
@@ -18,9 +18,9 @@ func (body *Body) AppendChild(element *Element) {
 }
 
 // This function creates and returns a blank document skeleton.
-func BlankDocument() HtmlDocument {
-	return HtmlDocument{
-		Head: HtmlHead{
+func BlankDocument() Document {
+	return Document{
+		Head: Head{
 			Title:   "",
 			Metas:   Metas{},
 			Links:   Links{},
@@ -31,6 +31,6 @@ func BlankDocument() HtmlDocument {
 }
 
 // This function will run an API call on the HtmlDocument and return its markup representation
-func (doc *HtmlDocument) Transform() string {
+func (doc *Document) Transform() string {
 	return TransformDocument(*doc)
 }

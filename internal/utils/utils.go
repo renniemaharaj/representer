@@ -1,20 +1,6 @@
-package representer
+package utils
 
-import (
-	"log"
-	"os"
-	"strings"
-)
-
-// This function generates markup for an HtmlDocument and exports it to the file specified. Export as .html.
-func (doc Document) ExportMarkup(filename string) {
-	html := doc.Transform()
-	fileName := filename
-	err := os.WriteFile(fileName, []byte(LintCodeFences(html)), 0644)
-	if err != nil {
-		log.Fatalf("Failed to write file: %v", err)
-	}
-}
+import "strings"
 
 // RemoveCodeFences removes ```html from the start and ``` from the end of the input string.
 func LintCodeFences(input string) string {

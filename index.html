@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="This is a simple document representer using GoLang for generating HTML documents.">
+    <meta name="author" content="Rennie Maharaj">
+    <meta name="keywords" content="ai,generated,thewriterco">
+    <title>Document Representer!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        .absolute {
+            position: absolute;
+        }
+
+        .top-10 {
+            top: 2.5rem;
+        }
+
+        .left-\[50\%\] {
+            left: 50%;
+        }
+        
+        .translate-x-\[-50\%\] {
+            transform: translateX(-50%);
+		}
+
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(-25%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateX(-50%) translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="absolute top-10 left-[50%] translate-x-[-50%] animate-bounce">Representer</h1>
+</body>
+</html>
