@@ -18,12 +18,11 @@ func GetInstructions() string {
 
 	Description:
 	This application generates responsive web pages based on a provided JSON object, 
-	which represents a Go struct-based document.
+	which represents a Go struct-based document. Elements will have ClassNames using tailwind CSS syntax.
 
 	Instructions:
 	- Use the attached JSON object as the data source.
-	- Generate only the HTML content of the web page.
-	- Use inline CSS for styling.
+	- Translate tailwind CSS class names to actual CSS classes and embed them in html style tags.
 	- Do not include any additional text or explanations in the response.
 	`
 }

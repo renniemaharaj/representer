@@ -5,6 +5,7 @@ type Element struct {
 	Tag        string
 	Attributes []Attribute
 	Children   []Element
+	ClassName  string
 }
 
 // This function appends one element as a child to another
@@ -18,9 +19,10 @@ func (element *Element) AppendAttribute(attribute *Attribute) {
 }
 
 // This will create and element of type specificed, and take a map for attributes.
-func CreateElementByAttributes(tag string, attributes *[]Attribute) Element {
+func CreateElementByAttributes(tag string, attributes *[]Attribute, classname string) Element {
 	var element Element = Element{}
 	element.Tag = tag
 	element.Attributes = *attributes
+	element.ClassName = classname
 	return element
 }
