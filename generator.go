@@ -27,14 +27,7 @@ func GetInstructions() string {
 			<h2>Instructions</h2>  
 				<ul>  
     				<li>Use the attached JSON object as the data source.</li>  
-    				<li>Convert Tailwind CSS utility classes into equivalent vanilla CSS.</li>  
-    				<li>Properly interpret Tailwind's bracket notation, escaped values, and arbitrary values:</li> 
-					<li>Hello, please do not double escape when you're generating vanilla CSS selectors as it will break CSS syntax.
-					<li>For example, the following Tailwind class selectors:</li> 
-					<pre>This is invalid CSS selector due to double escape characters: <code>.translate-x-\\[-50\\%\\]</code></pre>
-					<pre>This is valid CSS selector due to single escape characters: <code>.translate-x-\[-50\%\]</code></pre>
-					<li><code>\\</code> is an escape character in Tailwind CSS bracket notation. It is used to escape special characters like <code>[</code> and <code>]</code>.</li>
-					<li>Please ensure your output is runnable as this document will be served immediately</li>
+    				<li>Convert Tailwind CSS utility classes into element's inline styles</li>  
     			<ul>  
 
 	</Instructions>
