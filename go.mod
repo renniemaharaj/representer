@@ -1,4 +1,4 @@
-module representer
+module github.com/renniemaharaj/representer
 
 go 1.22.3
 
