@@ -4,7 +4,7 @@ import "github.com/renniemaharaj/representer"
 
 var language = "en"
 var title = "Document Representer!"
-var description = "This is a simple document representer using GoLang for generating HTML documents."
+var description = "This is a simple document go representer for building and generating HTML documents."
 var author = "Rennie Maharaj"
 var keywords = "ai,generated,thewriterco"
 
@@ -20,6 +20,9 @@ func MyDocument() *representer.Document {
 
 	// Set our document body
 	document.Body = *Body()
+
+	// Set our document style
+	document.Head.Styles = append(document.Head.Styles, *Style())
 
 	// Return our document
 	return &document
@@ -44,6 +47,17 @@ func Head() *representer.Head {
 	return &head
 }
 
+func Style() *representer.Style {
+	style := representer.Style{}
+
+	style.Selection = "body"
+	style.Styles = map[string]string{
+		"backgroundColor": "#101211",
+		"color":           "white",
+	}
+
+	return &style
+}
 func Body() *representer.Body {
 	body := representer.Body{}
 
@@ -52,6 +66,7 @@ func Body() *representer.Body {
 		Attributes: []representer.Attribute{
 			{Name: "class", Value: "absolute top-10 left-[50%] translate-x-[-50%] animate-bounce"},
 			{Name: "innerHTML", Value: "Go Represent!"},
+			{Name: "id", Value: "title"},
 		},
 		Children: []representer.Element{
 			{},

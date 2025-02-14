@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+
+	// "os"
 	"strings"
 
 	"github.com/google/generative-ai-go/genai"
@@ -82,6 +84,8 @@ func TransformDocument(document Document) string {
 	session := model.StartChat()
 	session.History = []*genai.Content{}
 
+	log.Print("Transforming document...")
+
 	// Send the document to the model
 	resp, err := session.SendMessage(ctx, genai.Text(MarshalDocument(document)))
 	if err != nil {
@@ -98,5 +102,5 @@ func TransformDocument(document Document) string {
 			// s.logger.Errorf("unexpected part type: %T", v)
 		}
 	}
-	return strings.Join(messages, " ")
+	return LintCodeFences(strings.Join(messages, " "))
 }

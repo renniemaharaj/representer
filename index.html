@@ -10,42 +10,57 @@
     <title>Document Representer!</title>
     <style>
         body {
-            font-family: sans-serif; /* Default, can be overridden */
+            background-color: #101211;
+            color: white;
         }
-		.absolute {
-            position: absolute;
-        }
+		.top-10 {
+			top: 2.5rem;
+		}
 
-        .top-10 {
-            top: 2.5rem; /* Assuming default Tailwind spacing */
-        }
-		
 		.left-\[50\%\] {
 			left: 50%;
 		}
-
-        .translate-x-\[-50\%\] {
-            transform: translateX(-50%);
+		.absolute {
+			position: absolute;
+		}
+		.translate-x-\[-50\%\]{
+			transform: translateX(-50%);
+		}
+        .animate-bounce {
+            animation: bounce 1s infinite;
         }
-		
-		.animate-bounce {
-			animation: bounce 1s infinite;
-		}
 
-		/*bounce animation*/
-		@keyframes bounce {
-			0%, 100% {
-				transform: translateX(-50%) translateY(-25%);
-				animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-			}
-			50% {
-				transform: translateX(-50%) translateY(0);
-				animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-			}
-		}
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(-25%) translateX(-50%); /* keep other transforms */
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(0) translateX(-50%); /* keep other transforms */
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
     </style>
+    
 </head>
 <body>
-    <h1 class="absolute top-10 left-[50%] translate-x-[-50%] animate-bounce">Go Represent!</h1>
+    <h1 class="absolute top-10 left-[50%] translate-x-[-50%] animate-bounce" id="title">Go Represent!</h1>
+    <script>
+			// Create a WebSocket connection
+			const ws = new WebSocket("ws://localhost:8080/ws");
+
+			ws.onopen = function(event) {
+				console.log("WebSocket connection opened.");
+
+				// Send a message to the server
+				ws.send("Hello, server!");
+
+				// Receive messages from the server
+				ws.onmessage = function(event) {
+					document.querySelector("#title").innerHTML = event.data;
+				};
+			};
+			
+		</script>
 </body>
 </html>

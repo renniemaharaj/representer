@@ -2,10 +2,11 @@ package representer
 
 // Script represents a script tag in the HTML head.
 type Script struct {
-	Src    string
-	Async  bool
-	Defer  bool
-	Inline string
+	Src     string
+	Async   bool
+	Defer   bool
+	Inline  string
+	Content string
 }
 
 //This function will return a single script tag.
