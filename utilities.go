@@ -10,7 +10,7 @@ import (
 func (doc HtmlDocument) ExportMarkup(filename string) {
 	html := doc.Transform()
 	fileName := filename
-	err := os.WriteFile(LintCodeFences(fileName), []byte(html), 0644)
+	err := os.WriteFile(fileName, []byte(LintCodeFences(html)), 0644)
 	if err != nil {
 		log.Fatalf("Failed to write file: %v", err)
 	}
