@@ -28,7 +28,9 @@ func GetInstructions() string {
 				<ul>  
     				<li>Use the attached JSON object as the data source.</li>  
     				<li>Convert Tailwind CSS utility classes into equivalent vanilla CSS.</li>  
-    				<li>Properly interpret Tailwind's bracket notation, escaped values, and arbitrary values:</li>  
+    				<li>Properly interpret Tailwind's bracket notation, escaped values, and arbitrary values:</li> 
+					<li>Hello, please do not double escape when you're generating vanilla CSS selectors as it will break CSS syntax. 
+					<pre><code>.translate-x-\\[-50\\%\\] <- IS NOT VALID CSS, SHOULD BE -> .translate-x-\[-50\%\] PLEASE! PLEASE! I WILL LOSE MY JOB IF CSS DOESN'T RUN</code></pre>
     			<ul>  
         			<li>Convert <code>left-[50%]</code> → <code>left: 50%;</code></li> 
 					<li>Translate selectors with escaped values: <code>left-[50%]</code> → <code>.left-\[50\%\]</code> (NOTICE ONE LEVEL OF ESCAPE | DOUBLE ESCAPING '//' WILL BREAK CSS SYNTAX) </li>
