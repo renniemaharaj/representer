@@ -31,54 +31,8 @@ func GetInstructions() string {
     				<li>Properly interpret Tailwind's bracket notation, escaped values, and arbitrary values:</li> 
 					<li>Hello, please do not double escape when you're generating vanilla CSS selectors as it will break CSS syntax. 
 					<pre><code>.translate-x-\\[-50\\%\\] <- IS NOT VALID CSS, SHOULD BE -> .translate-x-\[-50\%\] PLEASE! PLEASE! I WILL LOSE MY JOB IF CSS DOESN'T RUN</code></pre>
+					<li>We need browser reader CSS</li>
     			<ul>  
-        			<li>Convert <code>left-[50%]</code> → <code>left: 50%;</code></li> 
-					<li>Translate selectors with escaped values: <code>left-[50%]</code> → <code>.left-\[50\%\]</code> (NOTICE ONE LEVEL OF ESCAPE | DOUBLE ESCAPING '//' WILL BREAK CSS SYNTAX) </li>
-					<li>DO NOT DOUBLE ESCAPE IN SELECTORS!! DO NOT DOUBLE ESCAPE!! .translate-x-\\[-50\\%\\] <- IS NOT VALID CSS, SHOULD BE -> .translate-x-\[-50\%\]<li>
-					<li>Translate all selectors appropriately as the above example</li>
-        			<li>Convert <code>h-[calc(100vh-4rem)]</code> → <code>height: calc(100vh - 4rem);</code></li>  
-    			</ul>  
-    				<li>Handle negative values appropriately:</li>  
-    			<ul>  
-        			<li>Convert <code>-translate-x-1/2</code> → <code>transform: translateX(-50%);</code></li>  
-        			<li>Convert <code>-top-4</code> → <code>top: -1rem;</code> (assuming <code>1rem = 4px</code>).</li>  
-    			</ul>  
-    				<li>Convert shorthand properties into full CSS declarations:</li>  
-    			<ul>  
-        			<li><code>m-4</code> → <code>margin: 1rem;</code></li>  
-        			<li><code>grid-cols-3</code> → <code>grid-template-columns: repeat(3, minmax(0, 1fr));</code></li>  
-    			</ul>  
-    				<li>Translate conditional classes (<code>hover:</code>, <code>md:</code>, <code>lg:</code>) into valid CSS:</li>  
-    			<ul>  
-        			<li><code>hover:bg-red-500</code> →  
-            		<pre><code>.hover\:bg-red-500:hover { background-color: #ef4444; }</code></pre>  
-        			</li>  
-        			<li><code>md:flex</code> →  
-            		<pre><code>@media (min-width: 768px) { .md\:flex { display: flex; } }</code></pre>  
-        			</li>  
-    			</ul>  
-    				<li>Ensure Tailwind's default units (<code>rem</code>, <code>px</code>, etc.) are respected:</li>  
-    			<ul>  
-        			<li><code>text-4xl</code> → <code>font-size: 2.25rem;</code></li>  
-        			<li><code>gap-2</code> → <code>gap: 0.5rem;</code></li>  
-    			</ul>  
-    				<li>Convert Tailwind color names to their hex values:</li>  
-    			<ul>  
-        			<li><code>bg-blue-500</code> → <code>background-color: #3b82f6;</code></li>  
-        			<li><code>text-gray-700</code> → <code>color: #374151;</code></li>  
-    			</ul>  
-    				<li>Handle font weights, styles, and spacing properties:</li>  
-    			<ul>  
-        			<li><code>font-bold</code> → <code>font-weight: 700;</code></li>  
-        			<li><code>italic</code> → <code>font-style: italic;</code></li>  
-        			<li><code>leading-tight</code> → <code>line-height: 1.25;</code></li>  
-        			<li><code>tracking-wide</code> → <code>letter-spacing: 0.025em;</code></li>  
-    			</ul>  
-    				<li>Ensure CSS rules do not conflict when multiple utility classes are applied to the same element.</li>  
-    				<li>Place all styles within a <code>&lt;style&gt;</code> tag in the <code>&lt;head&gt;</code> section, avoiding inline styles.</li>  
-    				<li>If no <code>&lt;style&gt;</code> tag exists, create one.</li>  
-    				<li>Respond only with the complete HTML document—no additional text or explanations.</li>  
-				</ul>  
 
 	</Instructions>
 	`
