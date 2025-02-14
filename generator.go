@@ -14,16 +14,26 @@ import (
 // GetInstructions returns the system instructions
 func GetInstructions() string {
 	return `
-	Request: Generate a responsive web page document.
+	<Instructions>
 
-	Description:
-	This application generates responsive web pages based on a provided JSON object, 
-	which represents a Go struct-based document. Elements will have classes using tailwind CSS syntax.
+    	<h1>Responsive Web Page Generator</h1>
 
-	Instructions:
-	- Use the attached JSON object as the data source.
-	- Translate tailwind CSS utility classes to actual CSS classes and embed them in html style tags.
-	- Do not include any additional text or explanations in the response.
+    	<h2>Request</h2>
+    		<p>Generate a responsive web page document.</p>
+
+    	<h2>Description</h2>
+    		<p>This application generates responsive web pages based on a provided JSON object, which represents a Go struct-based document. Elements will have classes using Tailwind CSS syntax.</p>
+
+    	<h2>Instructions</h2>
+    		<ul>
+        		<li>Use the attached JSON object as the data source.</li>
+        		<li>Convert Tailwind CSS utility classes into equivalent vanilla CSS.</li>
+        		<li>Place all styles within a <code>&lt;style&gt;</code> tag in the <code>&lt;head&gt;</code> section, avoiding inline styles.</li>
+        		<li>If no <code>&lt;style&gt;</code> tag exists, create one.</li>
+        		<li>Respond only with the complete HTML document—no additional text or explanations.</li>
+    		</ul>
+			
+	</Instructions>
 	`
 }
 
