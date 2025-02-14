@@ -12,31 +12,34 @@ func MyDocument() *representer.Document {
 	// Create a new document
 	var document = representer.BlankDocument()
 
-	// Set the document head
+	// Set our document head
 	document.Head = *Head()
 
-	// Set the document language and title
+	// Set our document language
 	document.Language = language
-	document.Head.Title = title
 
-	// Append the body to the document
+	// Set our document body
 	document.Body = *Body()
 
+	// Return our document
 	return &document
 }
 
 func Head() *representer.Head {
 	head := representer.Head{}
 
-	var metas = &representer.Metas{}
+	head.Title = title
 
-	metas.AppendMeta(representer.MakeMeta("charset", []string{"UTF-8"}, ""))
-	metas.AppendMeta(representer.MakeMeta("name", []string{"viewport"}, "width=device-width, initial-scale=1.0"))
-	metas.AppendMeta(representer.MakeMeta("name", []string{"description"}, description))
-	metas.AppendMeta(representer.MakeMeta("name", []string{"author"}, author))
-	metas.AppendMeta(representer.MakeMeta("name", []string{"keywords"}, keywords))
+	metas := make([]representer.Meta, 0)
 
-	head.Metas = *metas
+	metas = append(metas, *representer.MakeMeta("charset", []string{"UTF-8"}, ""))
+	metas = append(metas, *representer.MakeMeta("name", []string{"viewport"}, "width=device-width, initial-scale=1.0"))
+	metas = append(metas, *representer.MakeMeta("name", []string{"description"}, description))
+	metas = append(metas, *representer.MakeMeta("name", []string{"author"}, author))
+	metas = append(metas, *representer.MakeMeta("name", []string{"keywords"}, keywords))
+	metas = append(metas, *representer.MakeMeta("charset", []string{"UTF-8"}, ""))
+
+	head.Metas = metas
 
 	return &head
 }
@@ -44,18 +47,18 @@ func Head() *representer.Head {
 func Body() *representer.Body {
 	body := representer.Body{}
 
-	header := representer.Element{
+	h1 := representer.Element{
 		Tag: "h1",
 		Attributes: []representer.Attribute{
 			{Name: "class", Value: "absolute top-10 left-[50%] translate-x-[-50%] animate-bounce"},
-			{Name: "innerHTML", Value: "Representer"},
+			{Name: "innerHTML", Value: "Go Represent!"},
 		},
 		Children: []representer.Element{
 			{},
 		},
 	}
 
-	body.Elements = append(body.Elements, header)
+	body.Elements = append(body.Elements, h1)
 
 	return &body
 }

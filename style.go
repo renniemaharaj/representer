@@ -1,10 +1,13 @@
 package representer
 
 type Style struct {
-	Attribute string
-	Value     string
-}
-type StyleBlock struct {
 	Selection string
-	Styles    []Style
+	Styles    map[string]string
+}
+
+func MakeStyle(selection string, styles map[string]string) *Style {
+	return &Style{
+		Selection: selection,
+		Styles:    styles,
+	}
 }

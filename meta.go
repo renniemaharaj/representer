@@ -15,13 +15,3 @@ func MakeMeta(attribute string, values []string, content string) *Meta {
 		Content:   content,
 	}
 }
-
-// Type Metas represents the entire meta section of a document head
-type Metas struct {
-	MetaTags []Meta
-}
-
-// This function appends a meta tag to the metas struct of a document head.
-func (metas *Metas) AppendMeta(metatag *Meta) {
-	metas.MetaTags = append(metas.MetaTags, *metatag)
-}
