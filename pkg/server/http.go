@@ -7,12 +7,21 @@ import (
 )
 
 // WServer starts an HTTP server that serves the latest document version
-func WServer(port string, chanS chan []byte, chanR chan []byte) {
+func WServer(port string, dist string, chanS chan []byte, chanR chan []byte) {
 	mux := http.NewServeMux()
 
 	// Serve the latest transformed document
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./index.html")
+		http.ServeFile(w, r, fmt.Sprintf("%s/index.html", dist))
+	})
+
+	// Serve static files like styles.css and script.js
+	mux.HandleFunc("/styles.css", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, fmt.Sprintf("%s/styles.css", dist))
+	})
+
+	mux.HandleFunc("/script.js", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, fmt.Sprintf("%s/script.js", dist))
 	})
 
 	// WebSocket route

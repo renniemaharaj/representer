@@ -3,6 +3,7 @@ package elements
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -32,17 +33,37 @@ func BlankDocument() Document {
 	}
 }
 
-// This function generates markup for an HtmlDocument and exports it to the file specified. Export as .html.
-func (doc Document) Export(filename string) {
-	html := doc.Transform()
-	fileName := filename
-	err := os.WriteFile(fileName, []byte(utils.LintCodeFences(html)), 0644)
+// This function transforms a Document and exports it to the file specified. Export as .html.
+func (doc Document) Export(dist string) {
+
+	response, err := doc.Transform()
+	if err != nil {
+		log.Fatalf("Error transforming document: %v", err)
+	}
+
+	// Create the dist directory if it doesn't exist
+	err = os.MkdirAll(dist, 0755)
+	if err != nil {
+		log.Fatalf("Failed to create directory: %v", err)
+	}
+
+	err = os.WriteFile(fmt.Sprintf("%v/%v", dist, response.Html.Filename), []byte(response.Html.Content), 0644)
+	if err != nil {
+		log.Fatalf("Failed to write file: %v", err)
+	}
+
+	err = os.WriteFile(fmt.Sprintf("%v/%v", dist, response.Css.Filename), []byte(response.Css.Content), 0644)
+	if err != nil {
+		log.Fatalf("Failed to write file: %v", err)
+	}
+
+	err = os.WriteFile(fmt.Sprintf("%v/%v", dist, response.Script.Filename), []byte(response.Script.Content), 0644)
 	if err != nil {
 		log.Fatalf("Failed to write file: %v", err)
 	}
 }
 
-// MarshalDocument marshals a document to a JSON string
+// Marshals a document to a JSON string
 func (doc *Document) Marshal() string {
 	documentBytes, err := json.Marshal(doc)
 
@@ -53,8 +74,23 @@ func (doc *Document) Marshal() string {
 	return string(documentBytes)
 }
 
-// SendMessage sends a message to the generative AI model
-func (doc *Document) Transform() string {
+func UnmarshalResponse(response string) (*utils.ResponseSchema, error) {
+	linted := utils.LintCodeFences(&response, "json")
+
+	res := utils.ResponseSchema{}
+
+	err := json.Unmarshal([]byte(*linted), &res)
+
+	if err != nil {
+		return &utils.ResponseSchema{}, fmt.Errorf("error unmarshalling response: %v", err)
+	}
+
+	return &res, nil
+
+}
+
+// Requests a model to transform document
+func (doc *Document) Transform() (*utils.ResponseSchema, error) {
 	ctx := context.Background()
 
 	apiKey, ok := os.LookupEnv("GEMINI_API_KEY")
@@ -103,5 +139,18 @@ func (doc *Document) Transform() string {
 			// s.logger.Errorf("unexpected part type: %T", v)
 		}
 	}
-	return utils.LintCodeFences(strings.Join(messages, " "))
+
+	//Build the response
+	response := strings.Join(messages, " ")
+
+	// Lint the response
+	linted := utils.LintCodeFences(&response, "html")
+
+	// Unmarshal the response
+	responseStruct, err := UnmarshalResponse(*linted)
+	if err != nil {
+		return &utils.ResponseSchema{}, fmt.Errorf("error unmarshalling response: %v", err)
+	}
+
+	return responseStruct, nil
 }

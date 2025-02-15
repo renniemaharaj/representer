@@ -11,6 +11,9 @@ import (
 // The port to run the HTTP server on
 var port = "8080"
 
+// The directory to export the document to
+var dist = "static"
+
 func JScriptWS() elements.Script {
 	return elements.Script{
 		Content: fmt.Sprintf(`
@@ -41,14 +44,14 @@ func main() {
 	doc.Head.Scripts = append(doc.Head.Scripts, JScriptWS())
 
 	// Transform the document to HTML
-	doc.Export("index.html")
+	doc.Export(dist)
 
 	// Channels for WebSocket communication
 	chanS := make(chan []byte)
 	chanR := make(chan []byte)
 
 	// Start the HTTP/WebSocket server
-	server.WServer(port, chanS, chanR)
+	server.WServer(port, dist, chanS, chanR)
 
 	select {} // Keep the main thread running
 }

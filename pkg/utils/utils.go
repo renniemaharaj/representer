@@ -8,21 +8,23 @@ import (
 )
 
 // RemoveCodeFences removes ```html from the start and ``` from the end of the input string.
-func LintCodeFences(input string) string {
-	const codeFenceStart = "```html"
+func LintCodeFences(input *string, language string) *string {
+	codeFenceStart := fmt.Sprintf("```%v", language)
 	const codeFenceEnd = "```"
 
 	// Trim the starting "```html"
-	input = strings.TrimPrefix(input, codeFenceStart)
+	*input = strings.TrimPrefix(*input, codeFenceStart)
 
 	// Trim any leading/trailing whitespace or newlines to better detect the ending code fence
-	input = strings.TrimSpace(input)
+	*input = strings.TrimSpace(*input)
 
 	// Trim the ending "```"
-	input = strings.TrimSuffix(input, codeFenceEnd)
+	*input = strings.TrimSuffix(*input, codeFenceEnd)
 
 	// Trim excess whitespace again
-	return strings.TrimSpace(input)
+	trimmedInput := strings.TrimSpace(*input)
+
+	return &trimmedInput
 }
 
 // hashFile computes the SHA-256 hash of a file
