@@ -1,4 +1,4 @@
-package representer
+package elements
 
 // Script represents a script tag in the HTML head.
 type Script struct {

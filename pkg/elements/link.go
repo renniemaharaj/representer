@@ -1,4 +1,4 @@
-package representer
+package elements
 
 // LinkTag represents a link tag in the document head.
 type Link struct {

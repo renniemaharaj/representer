@@ -3,15 +3,16 @@ package main
 import (
 	"fmt"
 
-	"github.com/renniemaharaj/representer"
 	"github.com/renniemaharaj/representer/internal/ui"
+	"github.com/renniemaharaj/representer/pkg/elements"
+	"github.com/renniemaharaj/representer/pkg/server"
 )
 
 // The port to run the HTTP server on
 var port = "8080"
 
-func JScriptWS() representer.Script {
-	return representer.Script{
+func JScriptWS() elements.Script {
+	return elements.Script{
 		Content: fmt.Sprintf(`
 			// Create a WebSocket connection
 			const ws = new WebSocket("ws://localhost:%v/ws");
@@ -40,14 +41,14 @@ func main() {
 	doc.Head.Scripts = append(doc.Head.Scripts, JScriptWS())
 
 	// Transform the document to HTML
-	doc.ExportMarkup("index.html")
+	doc.Export("index.html")
 
 	// Channels for WebSocket communication
 	chanS := make(chan []byte)
 	chanR := make(chan []byte)
 
 	// Start the HTTP/WebSocket server
-	representer.WServer(port, chanS, chanR)
+	server.WServer(port, chanS, chanR)
 
 	select {} // Keep the main thread running
 }

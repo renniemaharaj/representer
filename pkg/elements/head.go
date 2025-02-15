@@ -1,4 +1,4 @@
-package representer
+package elements
 
 // HtmlHead struct represents the entire head section of a document.
 type Head struct {

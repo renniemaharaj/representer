@@ -1,4 +1,4 @@
-package representer
+package elements
 
 // Element struct represents a document body element
 type Element struct {

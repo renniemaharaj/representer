@@ -1,20 +1,11 @@
-package representer
+package utils
 
 import (
-	"log"
+	"crypto/sha256"
+	"fmt"
 	"os"
 	"strings"
 )
-
-// This function generates markup for an HtmlDocument and exports it to the file specified. Export as .html.
-func (doc Document) ExportMarkup(filename string) {
-	html := doc.Transform()
-	fileName := filename
-	err := os.WriteFile(fileName, []byte(LintCodeFences(html)), 0644)
-	if err != nil {
-		log.Fatalf("Failed to write file: %v", err)
-	}
-}
 
 // RemoveCodeFences removes ```html from the start and ``` from the end of the input string.
 func LintCodeFences(input string) string {
@@ -32,4 +23,15 @@ func LintCodeFences(input string) string {
 
 	// Trim excess whitespace again
 	return strings.TrimSpace(input)
+}
+
+// hashFile computes the SHA-256 hash of a file
+func HashFile(filePath string) (string, error) {
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	hash := sha256.Sum256(content)
+	return fmt.Sprintf("%x", hash), nil
 }

@@ -1,4 +1,4 @@
-package representer
+package elements
 
 // MetaTag represents a meta tag in the HTML head.
 type Meta struct {

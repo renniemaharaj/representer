@@ -1,4 +1,4 @@
-package representer
+package elements
 
 // Body represents the body of a document.
 type Body struct {

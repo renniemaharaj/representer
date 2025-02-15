@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="This is a simple document representer using GoLang for generating HTML documents.">
+    <meta name="description" content="This is a simple document go representer for building and generating HTML documents.">
     <meta name="author" content="Rennie Maharaj">
     <meta name="keywords" content="ai,generated,thewriterco">
     <meta charset="UTF-8">
@@ -13,54 +13,55 @@
             background-color: #101211;
             color: white;
         }
+		.absolute {
+		    position: absolute;
+		}
+
 		.top-10 {
-			top: 2.5rem;
+		    top: 2.5rem;
 		}
 
 		.left-\[50\%\] {
-			left: 50%;
+		    left: 50%;
 		}
-		.absolute {
-			position: absolute;
-		}
-		.translate-x-\[-50\%\]{
-			transform: translateX(-50%);
-		}
-        .animate-bounce {
-            animation: bounce 1s infinite;
+		
+		.translate-x-\[-50\%\] {
+            transform: translateX(-50%);
         }
-
-        @keyframes bounce {
+		
+		.animate-bounce {
+		    animation: bounce 1s infinite;
+		}
+		@keyframes bounce {
             0%, 100% {
-                transform: translateY(-25%) translateX(-50%); /* keep other transforms */
+                transform: translateY(-25%) translateX(-50%); /* Apply both translations */
                 animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
             }
             50% {
-                transform: translateY(0) translateX(-50%); /* keep other transforms */
+                transform: translateY(0) translateX(-50%); /* Apply both translations */
                 animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
             }
         }
     </style>
-    
-</head>
-<body>
-    <h1 class="absolute top-10 left-[50%] translate-x-[-50%] animate-bounce" id="title">Go Represent!</h1>
-    <script>
-			// Create a WebSocket connection
-			const ws = new WebSocket("ws://localhost:8080/ws");
+    </head>
+    <body>
+        <h1 class="absolute top-10 left-[50%] translate-x-[-50%] animate-bounce" id="title">Go Represent!</h1>
+        <script>
+            // Create a WebSocket connection
+            const ws = new WebSocket("ws://localhost:8080/ws");
 
-			ws.onopen = function(event) {
-				console.log("WebSocket connection opened.");
+            ws.onopen = function(event) {
+                console.log("WebSocket connection opened.");
 
-				// Send a message to the server
-				ws.send("Hello, server!");
+                // Send a message to the server
+                ws.send("Hello, server!");
 
-				// Receive messages from the server
-				ws.onmessage = function(event) {
-					document.querySelector("#title").innerHTML = event.data;
-				};
-			};
+                // Receive messages from the server
+                ws.onmessage = function(event) {
+                    document.querySelector("#title").innerHTML = event.data;
+                };
+            };
 			
-		</script>
-</body>
+        </script>
+    </body>
 </html>
