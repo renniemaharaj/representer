@@ -10,8 +10,8 @@ type Script struct {
 }
 
 //This function will return a single script tag.
-func MakeScript(src string, async, deferring bool, inline string) Script {
-	return Script{
+func MakeScript(src string, async, deferring bool, inline string) *Script {
+	return &Script{
 		Src:    src,
 		Async:  async,
 		Defer:  deferring,

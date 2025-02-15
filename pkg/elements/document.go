@@ -1,16 +1,15 @@
 package elements
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
-	"github.com/google/generative-ai-go/genai"
-	"github.com/renniemaharaj/representer/pkg/utils"
-	"google.golang.org/api/option"
+	"context"
+
+	"github.com/renniemaharaj/representer/pkg/transformer"
+	"github.com/renniemaharaj/representer/pkg/transformer/gemini"
 )
 
 // HtmlDocument struct represents an entire HTML document.
@@ -21,8 +20,8 @@ type Document struct {
 }
 
 // This function creates and returns a blank document skeleton.
-func BlankDocument() Document {
-	return Document{
+func BlankDocument() *Document {
+	return &Document{
 		Head: Head{
 			Title:   "",
 			Metas:   []Meta{},
@@ -34,123 +33,66 @@ func BlankDocument() Document {
 }
 
 // This function transforms a Document and exports it to the file specified. Export as .html.
-func (doc Document) Export(dist string) {
-
+func (doc *Document) Export(dist string) error {
 	response, err := doc.Transform()
 	if err != nil {
-		log.Fatalf("Error transforming document: %v", err)
+		return fmt.Errorf("error transforming document: %v", err)
 	}
 
-	// Create the dist directory if it doesn't exist
-	err = os.MkdirAll(dist, 0755)
-	if err != nil {
-		log.Fatalf("Failed to create directory: %v", err)
+	if err := os.MkdirAll(dist, 0755); err != nil {
+		return fmt.Errorf("failed to create directory: %v", err)
 	}
 
-	err = os.WriteFile(fmt.Sprintf("%v/%v", dist, response.Html.Filename), []byte(response.Html.Content), 0644)
-	if err != nil {
-		log.Fatalf("Failed to write file: %v", err)
+	files := []struct {
+		path, content string
+	}{
+		{fmt.Sprintf("%v/%v", dist, response.Html.Filename), response.Html.Content},
+		{fmt.Sprintf("%v/%v", dist, response.Css.Filename), response.Css.Content},
+		{fmt.Sprintf("%v/%v", dist, response.Script.Filename), response.Script.Content},
 	}
 
-	err = os.WriteFile(fmt.Sprintf("%v/%v", dist, response.Css.Filename), []byte(response.Css.Content), 0644)
-	if err != nil {
-		log.Fatalf("Failed to write file: %v", err)
+	for _, file := range files {
+		if err := os.WriteFile(file.path, []byte(file.content), 0644); err != nil {
+			return fmt.Errorf("failed to write file %s: %w", file.path, err)
+		}
 	}
 
-	err = os.WriteFile(fmt.Sprintf("%v/%v", dist, response.Script.Filename), []byte(response.Script.Content), 0644)
-	if err != nil {
-		log.Fatalf("Failed to write file: %v", err)
-	}
+	return nil
 }
 
 // Marshals a document to a JSON string
-func (doc *Document) Marshal() string {
+func (doc *Document) Marshal() ([]byte, error) {
 	documentBytes, err := json.Marshal(doc)
 
 	if err != nil {
-		log.Fatalf("Error marshalling document: %v", err)
+		return nil, fmt.Errorf("error marshalling document: %v", err)
 	}
 
-	return string(documentBytes)
-}
-
-func UnmarshalResponse(response string) (*utils.ResponseSchema, error) {
-	linted := utils.LintCodeFences(&response, "json")
-
-	res := utils.ResponseSchema{}
-
-	err := json.Unmarshal([]byte(*linted), &res)
-
-	if err != nil {
-		return &utils.ResponseSchema{}, fmt.Errorf("error unmarshalling response: %v", err)
-	}
-
-	return &res, nil
+	return documentBytes, nil
 
 }
 
 // Requests a model to transform document
-func (doc *Document) Transform() (*utils.ResponseSchema, error) {
+func (doc *Document) Transform() (*transformer.Schema, error) {
+	// Create a new context
 	ctx := context.Background()
 
-	apiKey, ok := os.LookupEnv("GEMINI_API_KEY")
-
-	if !ok {
-		log.Fatalln("Environment variable GEMINI_API_KEY not set")
-	}
-
-	client, err := genai.NewClient(ctx, option.WithAPIKey(apiKey))
+	// Get the model
+	model, cleanup, err := gemini.Model(ctx)
 	if err != nil {
-		log.Fatalf("Error creating client: %v", err)
+		return nil, err
 	}
-	defer client.Close()
+	defer cleanup()
 
-	model := client.GenerativeModel("gemini-2.0-pro-exp-02-05")
+	// Create a new session
+	session := gemini.Session{Model: *model}
 
-	model.SetTemperature(1)
-	model.SetTopK(64)
-	model.SetTopP(0.95)
-	model.SetMaxOutputTokens(8192)
-	model.ResponseMIMEType = "text/plain"
-	model.SystemInstruction = &genai.Content{
-		Parts: []genai.Part{
-			genai.Text(utils.GetInstructions()),
-		},
-	}
-
-	session := model.StartChat()
-	session.History = []*genai.Content{}
-
-	log.Print("Transforming document...")
-
-	// Send the document to the model
-	resp, err := session.SendMessage(ctx, genai.Text(doc.Marshal()))
+	// Marshal the document
+	docBytes, err := doc.Marshal()
 	if err != nil {
-		log.Fatalf("Error sending message: %v", err)
+		return nil, fmt.Errorf("error marshalling document: %v", err)
 	}
 
-	// Collect response parts
-	var messages []string
-	for _, part := range resp.Candidates[0].Content.Parts {
-		switch v := part.(type) {
-		case genai.Text:
-			messages = append(messages, string(v))
-		default:
-			// s.logger.Errorf("unexpected part type: %T", v)
-		}
-	}
-
-	//Build the response
-	response := strings.Join(messages, " ")
-
-	// Lint the response
-	linted := utils.LintCodeFences(&response, "html")
-
-	// Unmarshal the response
-	responseStruct, err := UnmarshalResponse(*linted)
-	if err != nil {
-		return &utils.ResponseSchema{}, fmt.Errorf("error unmarshalling response: %v", err)
-	}
-
-	return responseStruct, nil
+	log.Println("Transforming document...")
+	return session.Request(string(docBytes), ctx)
 }

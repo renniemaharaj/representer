@@ -18,9 +18,9 @@ func (element *Element) AppendAttribute(attribute *Attribute) {
 }
 
 // This will create and element of type specificed, and take a map for attributes.
-func CreateElementByAttributes(tag string, attributes *[]Attribute) Element {
+func CreateElementByAttributes(tag string, attributes *[]Attribute) *Element {
 	var element Element = Element{}
 	element.Tag = tag
 	element.Attributes = *attributes
-	return element
+	return &element
 }

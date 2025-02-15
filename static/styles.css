@@ -1,35 +1,35 @@
 body {
-	background-color: #101211;
-	color: white;
+    background-color: #101211;
+    color: white;
 }
 
 .absolute {
-	position: absolute;
+    position: absolute;
 }
 
 .top-10 {
-	top: 2.5rem;
+    top: 2.5rem;
 }
 
 .left-\[50\%\] {
-	left: 50%;
+    left: 50%;
 }
 
 .translate-x-\[-50\%\] {
-	transform: translateX(-50%);
+    transform: translateX(-50%);
 }
 
 .animate-bounce {
-	animation: bounce 1s infinite;
+    animation: bounce 1s infinite;
 }
 
 @keyframes bounce {
-	0%, 100% {
-		transform: translateY(-25%) translateX(-50%); /* include translateX to persist horizontal position */
-		animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-	}
-	50% {
-		transform: translateY(0) translateX(-50%); /* include translateX to persist horizontal position */
-		animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-	}
+    0%, 100% {
+        transform: translateX(-50%) translateY(-25%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+        transform: translateX(-50%) translateY(0);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
 }

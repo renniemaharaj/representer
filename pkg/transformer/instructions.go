@@ -1,15 +1,4 @@
-package utils
-
-type File struct {
-	Content  string `json:"content"`
-	Filename string `json:"filename"`
-}
-
-type ResponseSchema struct {
-	Html   File `json:"html"`
-	Css    File `json:"css"`
-	Script File `json:"script"`
-}
+package transformer
 
 // GetInstructions returns the system instructions
 func GetInstructions() string {

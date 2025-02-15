@@ -25,7 +25,7 @@ func MyDocument() *elements.Document {
 	document.Head.Styles = append(document.Head.Styles, *Style())
 
 	// Return our document
-	return &document
+	return document
 }
 
 func Head() *elements.Head {

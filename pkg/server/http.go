@@ -34,7 +34,7 @@ func WServer(port string, dist string, chanS chan []byte, chanR chan []byte) {
 	go func() {
 		log.Printf("Server running on port %s...\n", port)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Server error: %v", err)
+			log.Printf("\nServer error: %v", err)
 		}
 	}()
 }
