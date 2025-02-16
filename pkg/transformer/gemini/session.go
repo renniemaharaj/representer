@@ -25,18 +25,13 @@ func (s *Session) Request(doc string, ctx context.Context) (*transformer.Schema,
 	}
 
 	// Collect response parts
-	var messages []string
+	sb := strings.Builder{}
 	for _, part := range resp.Candidates[0].Content.Parts {
-		switch v := part.(type) {
-		case genai.Text:
-			messages = append(messages, string(v))
-		default:
-			// s.logger.Errorf("unexpected part type: %T", v)
-		}
+		sb.WriteString(string(part.(genai.Text)))
 	}
 
 	//Build the response
-	response := strings.Join(messages, " ")
+	response := sb.String()
 
 	// Lint the response
 	linted := utils.LintCodeFences(&response, "html")

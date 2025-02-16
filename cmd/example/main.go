@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 
 	"github.com/renniemaharaj/representer/internal/ui"
+	// "github.com/renniemaharaj/representer/pkg/elements"
 	"github.com/renniemaharaj/representer/pkg/elements"
 	"github.com/renniemaharaj/representer/pkg/server"
 )
@@ -12,39 +13,24 @@ import (
 var port = "8080"
 
 // The directory to export the document to
-var dist = "static"
-
-func JScriptWS() elements.Script {
-	return elements.Script{
-		Content: fmt.Sprintf(`
-			// Create a WebSocket connection
-			const ws = new WebSocket("ws://localhost:%v/ws");
-
-			ws.onopen = function(event) {
-				console.log("WebSocket connection opened.");
-
-				// Send a message to the server
-				ws.send("Hello, server!");
-
-				// Receive messages from the server
-				ws.onmessage = function(event) {
-					document.querySelector("#title").innerHTML = event.data;
-				};
-			};
-			
-		`, port),
-	}
-}
+var dist = "dist"
 
 func main() {
 	// Create a new document
 	doc := ui.MyDocument()
 
+	doc.Head.Links = append(doc.Head.Links, elements.Link{
+		Rel:  "stylesheet",
+		Href: "/static/styles.css",
+	})
+
 	// Add the WebSocket script to the document
-	doc.Head.Scripts = append(doc.Head.Scripts, JScriptWS())
+	doc.Head.Scripts = append(doc.Head.Scripts, elements.Script{
+		Src: "/static/script.js",
+	})
 
 	// Transform the document to HTML
-	doc.Export(dist)
+	doc.Build(dist)
 
 	// Channels for WebSocket communication
 	chanS := make(chan []byte)

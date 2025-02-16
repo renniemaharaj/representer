@@ -33,7 +33,7 @@ func BlankDocument() *Document {
 }
 
 // This function transforms a Document and exports it to the file specified. Export as .html.
-func (doc *Document) Export(dist string) error {
+func (doc *Document) Build(dist string) error {
 	response, err := doc.Transform()
 	if err != nil {
 		return fmt.Errorf("error transforming document: %v", err)
@@ -48,10 +48,16 @@ func (doc *Document) Export(dist string) error {
 	}{
 		{fmt.Sprintf("%v/%v", dist, response.Html.Filename), response.Html.Content},
 		{fmt.Sprintf("%v/%v", dist, response.Css.Filename), response.Css.Content},
-		{fmt.Sprintf("%v/%v", dist, response.Script.Filename), response.Script.Content},
+		// {fmt.Sprintf("%v/%v", dist, response.Script.Filename), response.Script.Content},
 	}
 
 	for _, file := range files {
+		// Skip empty files
+		if file.content == "" {
+			continue
+		}
+
+		// Write the file
 		if err := os.WriteFile(file.path, []byte(file.content), 0644); err != nil {
 			return fmt.Errorf("failed to write file %s: %w", file.path, err)
 		}

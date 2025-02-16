@@ -10,19 +10,11 @@ import (
 func WServer(port string, dist string, chanS chan []byte, chanR chan []byte) {
 	mux := http.NewServeMux()
 
-	// Serve the latest transformed document
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, fmt.Sprintf("%s/index.html", dist))
-	})
+	// Serve all files from dist/
+	mux.Handle("/", http.FileServer(http.Dir(dist)))
 
-	// Serve static files like styles.css and script.js
-	mux.HandleFunc("/styles.css", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, fmt.Sprintf("%s/styles.css", dist))
-	})
-
-	mux.HandleFunc("/script.js", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, fmt.Sprintf("%s/script.js", dist))
-	})
+	// Serve files from static/
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	// WebSocket route
 	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {

@@ -52,12 +52,12 @@ func Style() *elements.Style {
 
 	style.Selection = "body"
 	style.Styles = map[string]string{
-		"backgroundColor": "#101211",
-		"color":           "white",
+		"color": "white",
 	}
 
 	return &style
 }
+
 func Body() *elements.Body {
 	body := elements.Body{}
 

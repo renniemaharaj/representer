@@ -1,0 +1,30 @@
+.absolute {
+  position: absolute;
+}
+
+.top-10 {
+  top: 2.5rem;
+}
+
+.left-\[50\%\] {
+  left: 50%;
+}
+
+.translate-x-\[-50\%\] {
+  transform: translateX(-50%);
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%) translateX(-50%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0) translateX(-50%);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce {
+    animation: bounce 1s infinite;
+}

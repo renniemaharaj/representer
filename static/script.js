@@ -1,16 +1,17 @@
+// Initiate WebSocket connection
+const ws = new WebSocket("ws://localhost:8080/ws");
 
-			// Create a WebSocket connection
-			const ws = new WebSocket("ws://localhost:8080/ws");
+// WebSocket event listeners
+ws.onopen = () => {
+  console.log("Connected");
 
-			ws.onopen = function(event) {
-				console.log("WebSocket connection opened.");
+  // Send message to WebSocket server
+  ws.onmessage = (message) => {
+    console.log(message.data);
+  };
 
-				// Send a message to the server
-				ws.send("Hello, server!");
-
-				// Receive messages from the server
-				ws.onmessage = function(event) {
-					document.querySelector("#title").innerHTML = event.data;
-				};
-			};
-		
+  // Close WebSocket connection
+  ws.onclose = () => {
+    console.log("Disconnected");
+  };
+};

@@ -13,9 +13,8 @@ type File struct {
 }
 
 type Schema struct {
-	Html   File `json:"html"`
-	Css    File `json:"css"`
-	Script File `json:"script"`
+	Html File `json:"html"`
+	Css  File `json:"css"`
 }
 
 func Unmarshal(resp string) (*Schema, error) {
