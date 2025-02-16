@@ -15,3 +15,13 @@ ws.onopen = () => {
     console.log("Disconnected");
   };
 };
+
+// DOM manipulation
+document.addEventListener("DOMContentLoaded", function () {
+  const title = document.getElementById("title");
+  const changeTextBtn = document.getElementById("changeTextBtn");
+
+  changeTextBtn.addEventListener("click", function () {
+    title.textContent = "Golang Rocks!";
+  });
+});

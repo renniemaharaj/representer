@@ -1,12 +1,8 @@
 package main
 
 import (
-	// "fmt"
-
 	"github.com/renniemaharaj/representer/internal/ui"
-	// "github.com/renniemaharaj/representer/pkg/elements"
 	"github.com/renniemaharaj/representer/pkg/elements"
-	"github.com/renniemaharaj/representer/pkg/server"
 )
 
 // The port to run the HTTP server on
@@ -29,15 +25,10 @@ func main() {
 		Src: "/static/script.js",
 	})
 
-	// Transform the document to HTML
-	doc.Build(dist)
+	// Build and serve the document
 
-	// Channels for WebSocket communication
-	chanS := make(chan []byte)
-	chanR := make(chan []byte)
-
-	// Start the HTTP/WebSocket server
-	server.WServer(port, dist, chanS, chanR)
+	// chanS, chanR := doc.BuildAndServe(port, dist)
+	doc.BuildAndServe(port, dist)
 
 	select {} // Keep the main thread running
 }

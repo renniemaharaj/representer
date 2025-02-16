@@ -10,6 +10,8 @@ import (
 
 	"github.com/renniemaharaj/representer/pkg/transformer"
 	"github.com/renniemaharaj/representer/pkg/transformer/gemini"
+
+	"github.com/renniemaharaj/representer/pkg/server"
 )
 
 // HtmlDocument struct represents an entire HTML document.
@@ -30,6 +32,21 @@ func BlankDocument() *Document {
 		},
 		Body: Body{},
 	}
+}
+
+// This function builds and serves a document on the specified port and directory.
+func (doc *Document) BuildAndServe(port, dist string) (chan []byte, chan []byte) {
+	// Transform the document to HTML
+	doc.Build(dist)
+
+	// Channels for WebSocket communication
+	chanS := make(chan []byte)
+	chanR := make(chan []byte)
+
+	// Start the HTTP/WebSocket server
+	server.WServer(port, dist, chanS, chanR)
+
+	return chanS, chanR
 }
 
 // This function transforms a Document and exports it to the file specified. Export as .html.

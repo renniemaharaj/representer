@@ -40,6 +40,7 @@ func GetInstructions() string {
         <ul>  
             <li>Use the attached JSON object as the data source.</li>  
             <li>Convert Tailwind utility classes to their valid vanilla CSS equivalent and store styles in the CSS file.</li>
+            <li>Do not omit class conversations for elements, all elements are required to have vanilla CSS equivalents for their utility class declaration<li>
             <li>If no style tags are included, insert a link to the CSS file in the HTML head.</li>
             <li>Ensure the HTML file includes:
                 <ul>
